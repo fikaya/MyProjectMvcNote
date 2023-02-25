@@ -1,0 +1,40 @@
+﻿@using MyMvcProject.Entities.ViewModels
+@using System.Web
+
+@model  HomeIndexViewModel
+
+@{
+    ViewBag.Title = "Index";
+}
+<!-- Page Content -->
+<div class="container">
+    <div class="row">
+        <!-- Kategoriler -->
+        <div class="col-md-3">
+            @Html.Partial("_PartialCategories", Model.Categories)
+        </div>
+        <div class="col-md-9">
+           
+            <div class="row">
+                <h2>
+                    Fatura
+                </h2>
+                <img class="center-block img-responsive img-rounded img-thumbnail" src="~/Template/Image/Ornek Fatura.PNG" />
+                <p>
+                    Yazar kasa (Makineli Kasa) Kayıt Fişleri Yazar kasa Fişi: Kullanan işletmelerin yaptıkları satışlar için vermek zorunda oldukları fişlerdir. Faturaya göre daha hızlı düzenlendiği için tercih edilir. Üzerinde el yazısı ile imza bulunmaz (istisnalar hariç)
+
+                    Fatura ve Yazar kasa fişi karşılaştırması Toptancılar Fatura kullanır, Yazar kasa fişi kullanamazlar. Çünkü az sayıda ama büyük miktarlarda ürün satarlar. Hız değil, güvenilirlik önemlidir
+
+                    Perakendeciler Yazar kasa fişi kullanırlar. Ancak aşağıdaki durumlarda Fatura keserler: (Aynı işlem için hem fatura hem fiş istenemez ve düzenlenemez. Yalnızca biri verilir.)
+
+                    Müşteri tarafından istenmesi halinde, değeri kaç lira olursa olsun, malı satan veya işi yapanın fatura vermesi zorunludur. Örneğin işletmesi için ürün alanlar işletmenin muhasebe kayıtlarında gider gösterip vergiden düşebilmek için mutlaka fatura almalıdır. (İstisnalar olabilir. Örneğin Akaryakıt istasyonlarından araçlara alınan yakıtların Yazar kasa fişleri işletmeler tarafından vergiden düşmek için yeterlidir. )
+                    Belirli bir tutarı aşan alışverişlerde. Bu tutar düzeyi her yıl değişebilir. Günümüzde bilgisayarlı yazar kasalar tutarın aşıldığını Fatura kesilmesi gerektiğini uyarmakta hatta Fiş kesilmesine izin vermemektedir.
+                    Tutarı ne olursa olsun “Lüks” sayılan ürünlerde. Örneğin “Cep telefonları”…
+                    Satıcı işletme eğer az miktarda ama pahalı ürün satıyor ve buna zamanı kalıyorsa tüm işlemler için fatura kesmeyi kendisi tercih edebilir. Bu durumda müşteri ayrıca Yazar kasa fişi isteyemez. Örneğin pahalı gömlekler satan bir işletme fatura düzenlemeyi tercih edebilir.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+

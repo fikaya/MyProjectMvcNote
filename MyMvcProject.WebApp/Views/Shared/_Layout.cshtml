@@ -1,0 +1,194 @@
+﻿@using MyMvcProject.WebApp.Models
+@using MyMvcProject.Entities.Entity
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <link href="~/Template/Css/myCss.css" rel="stylesheet" />
+
+    @RenderSection("Styles", required: false);
+    <style>
+        body:not(.modal-open) {
+            padding-right: 0px !important;
+        }
+    </style>
+</head>
+<body>
+
+    @{
+        MyProjectUser user = null;
+
+        if (CurrentSession.User != null)
+        {
+            user = CurrentSession.User;
+        }
+    }
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" 
+                        data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Menü</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Not Defterim</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    @if (user != null)
+                    {
+                        <li class="dropdown">
+                            <a href="#"
+                               class="dropdown-toggle"
+                               data-toggle="dropdown"
+                               role="button"
+                               aria-expanded="false">
+                                <span class="glyphicon glyphicon-wrench">
+                                </span>
+                                Yönetim
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu" role="menu">
+
+                                <li class="dropdown-item">
+                                    @Bootstrap.LinkMenu("/Note/Create", "plus", " Not Ekle")
+                                </li>
+                                <li class="dropdown-item">
+                                    @Bootstrap.LinkMenu("/Note/Index", "th-list", " Notlarım")
+                                </li>
+                                <li role="separator" class="divider">
+                                </li>
+                                <li class="dropdown-item">
+                                    @Bootstrap.LinkMenu("/Note/MyLikedNotes", "heart", " Beğendiklerim")
+                                </li>
+                                <li role="separator" class="divider dropdown-item">
+                                </li>
+                                @if (user.IsAdmin)
+                                {
+                                    <li class="dropdown-item">
+                                        @Bootstrap.LinkMenu("/Category/Create", "plus", " Kategori Ekle")
+                                    </li>
+                                    <li class="dropdown-item divide" role="separator">
+                                    </li>
+                                    <li class="dropdown-item">
+                                        @Bootstrap.LinkMenu("/Category/Index", "th-list", " Kategoriler")
+                                    </li>
+                                    <li role="separator" class="divider"></li>
+                                    <li>
+                                        @Bootstrap.LinkMenu("/MyProjectUser/Create", "plus", " Kullanıcı Ekle")
+                                    </li>
+                                    <li>
+                                        @Bootstrap.LinkMenu("/MyProjectUser/Index", "th-list", " Kullanıcılar")
+                                    </li>
+                                }
+                            </ul>
+                        </li>
+                    }
+
+                    <li>
+                        @Bootstrap.LinkMenu("/Home/MostLiked", "star", " En Beğenilenler")
+                    </li>
+                    <li>
+                        @Bootstrap.LinkMenu("/Home/Index", "th-list", " Son Yazılar")
+                    </li>
+                    <li>
+                        @Bootstrap.LinkMenu("/Home/About", "info-sign", " Hakkımızda")
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    @if (user == null)
+                    {
+                        <li>
+                            @Bootstrap.LinkMenu("/Login/Login", "log-in", " Giriş")
+                        </li>
+                        <li>
+                            @Bootstrap.LinkMenu("/Login/Register", "user", " Üye Ol")
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="dropdown">
+                            <a href="/Login/ShowProfile" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" 
+                               aria-expanded="false">
+                                <span class="glyphicon glyphicon-user">
+                                </span>
+                                @user.UserName
+                                <span class="caret">
+                                </span>
+                            </a>
+
+                            <ul class="dropdown-menu" style="list-style-type:none;padding-left:0">
+                                <li>
+                                    @Bootstrap.LinkMenu("/Login/ShowProfile", "user", " Profili Göster")
+                                </li>
+                                <li role="separator" class="divider"></li>
+                                <li>
+                                    @Bootstrap.LinkMenu("/Login/EditProfile", "edit", " Profili Düzenle")
+                                </li>
+                                <li>
+                                    <a href="/Login/RemoveProfile"
+                                       onclick="return confirm('Hesabınızı silmek istediğinze emin misiniz?')">
+                                        <span class="glyphicon glyphicon-trash">
+                                        </span>
+                                        Profili Sil
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            @Bootstrap.LinkMenu("/Login/Logout", "log-out", " Çıkış")
+                        </li>
+                    }
+
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+    <br />
+    <br />
+    @RenderBody();
+    <!-- /.container -->
+
+    <div class="container">
+
+        <hr>
+
+        <!-- Footer -->
+        <footer>
+            <div class="row">
+                <div class="col-lg-4 text-center">
+                </div>
+                <div class="col-lg-4 text-center">
+                    <p>Tüm Hakları Saklıdır &copy; Not Defterim @DateTime.Now.Year</p>
+                </div>
+                <div class="col-lg-4 text-center">
+                </div>
+            </div>
+        </footer>
+
+    </div>
+    <!-- /.container -->
+    <!-- jQuery -->
+    @*<script src="../Scripts/jquery-3.3.1.min.js"></script>*@
+    <script src="~/Scripts/jquery-3.6.3.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    @RenderSection("Scripts", required: false);
+
+</body>
+</html>

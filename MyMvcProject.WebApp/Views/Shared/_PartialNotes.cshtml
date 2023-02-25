@@ -1,0 +1,66 @@
+﻿
+<div class="row">
+    @foreach (var item in Model.Notes)
+    {
+        <div class="col-sm-12 col-lg-12 col-md-12" data-note-id="@item.ID">
+            <div class="thumbnail">
+                <img src="~/Template/Image/Ornek Fatura.PNG" style="width:300px" alt="@item.Title" />
+                <div class="caption">
+                    <h4>
+                        <a href="#">@item.Title</a>
+                    </h4>
+                    <h6>
+                        <span class="glyphicon glyphicon-time">
+                            @item.ModifiedOn
+
+                        </span>
+                        <br />
+                        <span class="glyphicon glyphicon-user">
+                            @item.MyProjectUser.UserName
+                        </span>
+                    </h6>
+                    @if (!string.IsNullOrEmpty(item.Text) && item.Text.Length > 70)
+                    {
+                        <p>
+                            @(item.Text.Substring(0, 70) + "...")
+                        </p>
+                             <a href="#" data-toggle="modal" data-target="#modal_noteDetail" data-note-id="@item.ID" class="btn btn-default btn-sm">
+                                Devamı
+                                <span class="glyphicon glyphicon-chevron-right">
+                                </span>
+                            </a>
+                    }
+                    else
+                    {
+                        <p>
+                            @item.Text
+                        </p>
+                    }
+                </div>
+                <div>
+                    <hr />
+                </div>
+                <div class="ratings">
+                    <p class="pull-right">
+                        <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#modal_comment" data-note-id="@item.ID">
+                            <span class="glyphicon glyphicon-comment">
+                                Yorumlar
+                            </span>
+                        </button>
+                    </p>
+                    <p>
+                        @* İlk başta like yapılmamış şekilde default olarak data-liked attribute ine false değerini atadık. *@
+                        @* Kullanıcın hangi notu like lamaya çalıştığını anlamak için data-note-id attribute unu kullancaz. *@
+                        <button class="btn btn-default" type="button" data-liked="false" data-note-id="@item.ID">
+                            <span class="glyphicon glyphicon-star-empty like-star"></span>&nbsp;
+                            @* Database deki son halini alcaz. *@
+                            <span class="like-count">
+                                @item.LikeCount
+                            </span>
+                        </button>
+                    </p>
+                </div>
+            </div>
+        </div>
+    }
+</div>

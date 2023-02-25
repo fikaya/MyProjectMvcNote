@@ -1,0 +1,28 @@
+﻿Mssql'de Tabloları İlişkilendirirken (Foreign Key) Cascade ve Restrict Farkı Nedir?
+
+
+Cascade (kademeli): 
+
+Eğer ilişkili ana satır (parent row) silinirse yada güncellenirse bağlı olduğu alt satır (child row) da
+silinir yada güncellenir.
+
+Restrict (sınırlama): 
+
+Fakat Restrict kullanırsanız o zaman ana satır (parent row) silinirse yada güncellenirse bağlı olduğu alt satır (child row) silinmez
+yada güncellenmez. Bir hata mesajı (error) verir. Örneğin "Silmeye çalıştığınız satırdaki .... alanı başka bir tabloda kullanılıyor". 
+Bu hata işlemini parent row silerseniz çıkar. Bağlı olduğu child row'u silseniz bir hata almazsınız ki olması gereken de budur.
+
+Set Null (Boş): 
+
+Parent row silinirse yada güncellenirse child row'a Boş (Null) değeri atanır.
+Yani burada şunu anlıyoruz.Eğer MyProjectUser tablosundan bir kullanıcı silinirse buradaki foregin alanına null atanacak.
+
+No Action(Hiçbirşey yapma): 
+
+Hiç bir işlem yapmaz.Yani parent row silinse de güncellense de child row da bir işlem yapılmaz.
+
+İki tablo arasında sonsuzluk işareti hangisine denk geliyora foreign alanını orada oluşturmak gerek.
+Örnek verirsek Şehir-Çalışanlar tablosu.
+Bir çalışan bir şehirde doğabilir.
+Bir şehirde birden çok çalışan doğabilir.
+Burada sonsuzluk işareti Calışanlar tablosu üzerinde olduğu için foreign alanını orada açacağız. 

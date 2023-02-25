@@ -1,0 +1,167 @@
+﻿@using MyMvcProject.Entities.ViewModels
+@using System.Web
+
+@model  HomeIndexViewModel
+
+@{
+    ViewBag.Title = "Index";
+}
+
+@section Styles{
+    <style>
+        .editable {
+            color: #495057;
+            background-color: #fff;
+            border-color: #80bdff;
+            outline: 0;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
+    </style>
+}
+
+<!-- Page Content -->
+<div class="container">
+    <div class="row">
+        <!-- Kategoriler -->
+        <div class="col-md-3">
+            @Html.Partial("_PartialCategories", Model.Categories)
+        </div>
+        <div class="col-md-9">
+            <!-- Carousel -->
+            <div class="row carousel-holder">
+
+                <div class="col-md-12">
+                    <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+                        <ol class="carousel-indicators">
+                            <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                            <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+                            <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+                        </ol>
+                        <div class="carousel-inner">
+                            <div class="item active">
+                                <img class="slide-image" src="http://placehold.it/800x300" alt="">
+                            </div>
+                            <div class="item">
+                                <img class="slide-image" src="http://placehold.it/800x300" alt="">
+                            </div>
+                            <div class="item">
+                                <img class="slide-image" src="http://placehold.it/800x300" alt="">
+                            </div>
+                        </div>
+                        <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
+                            <span class="glyphicon glyphicon-chevron-left"></span>
+                        </a>
+                        <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
+                            <span class="glyphicon glyphicon-chevron-right"></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            @* Notlar *@
+            <div class="row">
+                @Html.Partial("_PartialNotes", Model)
+            </div>
+        </div>
+    </div>
+</div>
+
+@Bootstrap.ModalPopup(id: "modal_comment", title: "Yorumlar")
+@Bootstrap.ModalPopup(id: "modal_noteDetail", title: "Not Detayı")
+
+@section Scripts{
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script>
+        $(function () {
+            $('#modal_noteDetail').on('show.bs.modal', function (e) {
+                var btn = $(e.relatedTarget);
+                noteid = btn.data("note-id");
+
+                $("#modal_noteDetail_body").load("/Note/GetNoteText/" + noteid);
+            })
+        });
+    </script>
+    <script src="~/Scripts/MyScripts/CommentJS.js"></script>
+    <script>
+        //Sayfa tamamen yüklendikten sonra,
+        $(function () {
+            //Sayfada ki div olup attribute u data-note-id olan değerleri bana getir demiş olcam.
+            var noteIds = [];
+            //Sayfada div olup data-note-id attribute u olan elementlerin hepsini getir each fonksiyonu ile hepsinde dön demiş oldum.
+            $("div[data-note-id]").each(function (i, e) {
+                //i=>index
+                //e=>element
+                //Elementi Jquery elementi haline getir dedik.
+                //push ile diziye eklemiş olduk.
+                noteIds.push($(e).data("note-id"));
+            });
+
+            $.ajax({
+                method: "POST",
+                url: "/Note/GetLiked",
+                data: { ids: noteIds }
+            }).done(function (data) {
+                //data parametresi içinde kullanıcının likeladığı notları görecez.
+                if (data.result != null && data.result.length > 0) {
+                    for (var i = 0; i < data.result.length; i++) {
+                        var id = data.result[i];
+                        //div[data-note-id] olarak değeri şu id olanı al demek için aşağıdaki selector ü kullanabiliriz.
+                        var likedNote = $("div[data-note-id=" + id + "]");
+                        //Bir yukarıdaki div elementini bulmuş olduk.
+                        var btn = likedNote.find("button[data-liked]");
+                        var span = btn.children().first();
+
+                        btn.data("liked", true);
+                        span.removeClass("glyphicon-star-empty");
+                        span.addClass("glyphicon-star");
+                    }
+                }
+            }).fail(function () {
+                alert("Sunucu ile bağlantı kurulamadı.");
+            });
+
+            $("button[data-liked").on("click", function () {
+                var btn = $(this);
+                var liked = btn.data("liked");
+                var noteid = btn.data("note-id");
+                var spanStar = btn.find("span.like-star");
+                var spanCount = btn.find("span.like-count");
+
+                $.ajax({
+                    method: "POST",
+                    url: "/Note/SetLikeState",
+                    data: { "noteID": noteid, "liked": !liked }
+                }).done(function (data) {
+                    if (data.hasError) {
+                        alert(data.errorMessage);
+                    }
+                    else {
+                        //İşlem başarılı olduğu için buraya girdik.
+                        liked = !liked;
+                        btn.data("liked", liked);
+
+                        //Likelandıysa da like yapılmasa da o iconları kaldırdık.
+                        spanStar.removeClass("glyphicon-star-empty");
+                        spanStar.removeClass("glyphicon-star");
+                        spanCount.text(data.result);
+
+                        if (liked) {
+                            spanStar.addClass("glyphicon-star");
+                        }
+                        else {
+                            spanStar.addClass("glyphicon-star-empty");
+                        }
+
+                    }
+                }).fail(function () {
+                    alert("Sunucu ile bağlantı kurulamadı.");
+                })
+
+            });
+        });
+    </script>
+
+}
+
+
+

@@ -1,0 +1,98 @@
+﻿@using MyMvcProject.Entities.ViewModels
+@model Tuple<RegisterViewModel, LoginViewModel>
+
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_LoginLayout.cshtml";
+}
+
+@section Styles{
+    <style>
+        .validation-summary-errors {
+            border: 2px dotted #a94442;
+            background-color: #d76663;
+            border-radius: 8px;
+        }
+
+            .validation-summary-errors ul {
+                list-style-type: none;
+                padding: 10px;
+                color: #fff;
+            }
+    </style>
+}
+
+<div id="first">
+    <div class="myform form ">
+        <div class="logo mb-3">
+            <div class="col-md-12 text-center">
+                <h1>Giriş Yap</h1>
+            </div>
+        </div>
+        @Html.ValidationSummary(false)
+
+        @using (Html.BeginForm("Login", "Login", FormMethod.Post))
+        {
+            <div class="form-group">
+                @Html.LabelFor(x => x.Item2.UserMail, new { @for = "UserMail", value = "Kullanıcı E-Mail Adresi" })
+                @Html.TextBoxFor(x => x.Item2.UserMail, new { @class = "form-control", placeholder = "Lütfen Mail Adresini Giriniz.", type = "email" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(x => x.Item2.Password, new { @for = "Password", value = "Kullanıcı Şifresi" })
+                @Html.TextBoxFor(x => x.Item2.Password, new { @class = "form-control", placeholder = "Lütfen Şifreyi Giriniz.", type = "password" })
+            </div>
+
+            <div class="col-md-12 text-center ">
+                <button type="submit" class=" btn btn-block mybtn btn-primary tx-tfm">GİrİŞ Yap</button>
+            </div>
+            <div class="form-group">
+                <p class="text-center">Henüz Bir Hesabın Yok Mu? <br /><a href="#" id="signup">Buradan Kayıt Olabilirsin</a></p>
+            </div>
+        }
+    </div>
+</div>
+<div id="second">
+    <div class="myform form ">
+        <div class="logo mb-3">
+            <div class="col-md-12 text-center">
+                <h1>Kayıt Ol</h1>
+            </div>
+        </div>
+
+        @using (Html.BeginForm("Register", "Login", FormMethod.Post))
+        {
+            <div class="form-group">
+                @Html.LabelFor(x => x.Item1.UserName, new { @for = "Password", value = "Kullanıcı Adı" })
+                @Html.TextBoxFor(x => x.Item1.UserName, new { @class = "form-control", placeholder = "Lütfen Kullanıcı Adını Giriniz." })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(x => x.Item1.UserMail, new { @for = "UserMail", value = "Kullanıcı E-Mail Adresi" })
+                @Html.TextBoxFor(x => x.Item1.UserMail, new { @class = "form-control", placeholder = "Lütfen Mail Adresini Giriniz.", type = "email" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(x => x.Item1.Password, new { @for = "Password", value = "Kullanıcı Şifresi" })
+                @Html.TextBoxFor(x => x.Item1.Password, new { @class = "form-control", placeholder = "Lütfen Şifreyi Giriniz.", type = "password" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(x => x.Item1.RePassword, new { @for = "Password", value = "Kullanıcı Şifresi" })
+                @Html.TextBoxFor(x => x.Item1.RePassword, new { @class = "form-control", placeholder = "Lütfen Şifreyi Giriniz.", type = "password" })
+            </div>
+
+            <div class="col-md-12 text-center mb-3">
+                <button type="submit" class=" btn btn-block mybtn btn-primary tx-tfm">Kayıt Ol</button>
+            </div>
+            <div class="col-md-12 ">
+                <div class="form-group">
+                    <p class="text-center"><a href="#" id="signin">Giriş Yap</a></p>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+
+

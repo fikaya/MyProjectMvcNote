@@ -1,0 +1,92 @@
+﻿@using MyMvcProject.Entities.Entity
+@using MyMvcProject.WebApp.Models
+
+@model List<Comment>
+@{
+
+    var user = CurrentSession.User;
+}
+
+@foreach (var item in Model)
+{
+    <div class="media">
+        <div class="media-left media-top">
+            <div class="">
+                <span class="glyphicon glyphicon-comment">
+                </span>
+            </div>
+        </div>
+        <div class="media-body">
+            <div>
+                @*
+                    Burada aşağıdaki spana bir id değeri verme sebebi şu
+                    gerek ona da id üzerinden erişcem. Eğer aynı idleri verirsek düzenle butonuna bastığım an hangi yorumun düzenleneceği karışır.
+                *@
+                @*
+                    contenteditable attribute u eğer true olursa text box gibi davranır ve artık o text box düzenlenebilir oluyor.
+                *@
+                <span class="col-md-10" id="comment_text_@item.ID" contenteditable="false">
+                    @item.Text
+                </span>
+
+                @* Eğer session daki kişinin id si ile bu yorumu yapan kişinin id si eğer eşleşiyorsa ona düzenleme ve silme yetkisi de verelim. *@
+
+                @if (user != null && user.ID == item.MyProjectUserID)
+                {
+                    <span class="col-md-2 text-right">
+                        @*onClick olayı web sayfasındaki DOM elementler üzerine tıklandığında zaman bir javascript fonksiyonunun tetiklenmesini sağlar.Buradaki
+                            onClick eventinde doComment fonksiyonunu çağıracağım.
+                        *@
+                        @*
+                            this kelimesi ile butonun kendisini göndereceğim.
+                            edit ile bu butona tıklandığında hangi tarz bir işlem yapılacağını belirttim.
+                            @item.ID ile bu düzenlenecek yorumun idsini vermiş oldum.
+
+                        *@
+                        <button type="button" class="btn btn-warning btn-xs" data-edit-mode="false"
+                                onclick="(doComment(this,'edit_clicked',@item.ID,'comment_text_@item.ID'))">
+                            <span class="glyphicon glyphicon-edit">
+                            </span>
+                        </button>
+                        <button type="button" class="btn btn-danger btn-xs"
+                                onclick="(doComment(this,'delete_clicked',@item.ID))">
+                            <span class="glyphicon glyphicon-trash">
+                            </span>
+                        </button>
+                    </span>
+                }
+
+                <small class="col-md-12 text-right">
+                    <span class="glyphicon glyphicon-time">
+                        @item.ModifiedOn
+                    </span>
+                    &nbsp;&nbsp;&nbsp;
+                    <span class="glyphicon glyphicon-user">
+                        @item.MyProjectUser.UserName
+                    </span>
+                </small>
+            </div>
+        </div>
+    </div>
+}
+
+@if (user != null)
+{
+    <div class="row">
+        <div class="col-md-12">
+            <hr />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="input-group">
+                <input type="text" id="new_comment_text" class="form-control" placeholder="Yorumunuz..">
+                <span class="input-group-btn">
+                    <button class="btn btn-success" type="button" onclick="doComment(this,'new_clicked');">
+                        <span class="glyphicon glyphicon-send"></span> Gönder
+                    </button>
+                </span>
+            </div>
+        </div>
+    </div>
+}

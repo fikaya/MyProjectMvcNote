@@ -1,0 +1,58 @@
+﻿@using MyMvcProject.Entities.Entity
+@model MyProjectUser
+
+@{
+    ViewBag.Title = "Profiliniz";
+}
+
+@section Styles{
+    <style>
+        .validation-summary-errors {
+            border: 2px dotted #a94442;
+            background-color: #d76663;
+            border-radius: 8px;
+        }
+
+            .validation-summary-errors ul {
+                list-style-type: none;
+                padding: 10px;
+                color: #fff;
+            }
+    </style>
+}
+
+<div class="container">
+
+    <div class="row">
+        <h2>@ViewBag.Title</h2>
+        <hr />
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-2">
+            @*<img src="~/Images/@Model.ProfileImageFileName" class="img-circle" width="128" height="128" />*@
+            <img src="~/Images/@Model.ProfileImageFileName" class="img-circle" width="128" height="128" />
+        </div>
+
+        <div class="col-md-8">
+            <h3>@(Model.Name + " " + Model.Surname)</h3>
+            <br />
+            <h6>
+                <b>
+                    @Html.DisplayNameFor(model => model.UserName):
+                </b>
+                @Model.UserName
+            </h6>
+            <h6>
+                <b>
+                    @Html.DisplayNameFor(model => model.EMail):
+                </b>
+                @Model.EMail
+            </h6>
+           
+            <h5><a href="#">More... </a></h5>
+        </div>
+
+    </div>
+</div>
