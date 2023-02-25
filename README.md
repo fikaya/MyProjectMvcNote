@@ -20,4 +20,4 @@ Bu proje ile;
 -Ve son olarak Katmanlı Mimari kullanarak her katmanın nasıl bir hizmet ile kullanılacağını öğrendim.
 <br>
 
-Not: Web Config dosyası üzerinedn Mail ve Database ayarlarını değiştirebilirsiniz.
+Not: Web Config dosyası üzerinden Mail ve Database ayarlarını değiştirebilirsiniz.
